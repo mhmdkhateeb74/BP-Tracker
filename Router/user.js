@@ -1,0 +1,19 @@
+const express = require('express');
+const router = express.Router();
+
+
+const user_Mid=require("../middleware/user_Mid");
+
+router.get('/users',[user_Mid.ReadUsers], (req, res) => {
+    if(req.success){
+        res.status(200).json({msg:"ok",data:req.users_data});
+    } else {
+        return res.status(500).json({message:req.err});
+    }
+
+});
+
+
+
+
+module.exports = router;
