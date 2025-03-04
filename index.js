@@ -14,6 +14,10 @@ global.db_pool = db_M.pool;
 const Users_R = require('./Routers/user');
 app.use('/U', Users_R);
 
+
+const measurements_R = require('./Routers/measurements');
+app.use('/M', measurements_R);
+
 app.listen(port, () => {
     console.log(`Now listening on port http://localhost:${port}`);
 });
