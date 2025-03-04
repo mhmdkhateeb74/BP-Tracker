@@ -37,7 +37,44 @@ async function Addmeasurements(req, res, next) {
 
 
 
+async function ReadMeasurements(req, res, next) {
+    let user_id = req.body.user_id;
+
+
+
+    if (user_id === undefined) {
+        req.success = false;
+        req.err = "user_id is undefined";
+        return next();
+    }
+
+    const Query = `SELECT * FROM measurements WHERE user_id = '${user_id}'`;
+    const promisePool = db_pool.promise();
+    let rows = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        if (rows.length > 0) {
+            let sum = rows.reduce((acc, m) => acc + m.systolic, 0);
+            let average = sum / rows.length;
+            let threshold = average * 1.2;
+
+            rows.forEach(m => {
+                m.abnormal = (m.systolic > threshold);
+            });
+        }
+        req.success = true;
+        req.measurements_data = rows;
+    } catch (err) {
+        console.log("Error in ReadMeasurements:", err);
+        req.success = false;
+        req.err = err;
+    }
+    next();
+}
+
+
+
 module.exports = {
     Addmeasurements,
-    
+    ReadMeasurements,
 };
