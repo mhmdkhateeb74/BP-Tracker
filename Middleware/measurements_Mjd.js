@@ -34,3 +34,10 @@ async function Addmeasurements(req, res, next) {
     }
     next();
 }
+
+
+
+module.exports = {
+    Addmeasurements,
+    
+};
