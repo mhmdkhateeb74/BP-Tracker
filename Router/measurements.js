@@ -57,4 +57,13 @@ router.post('/measurements/monthly-averages', [measurements_Mid.GetMonthlyUserAv
 });
 
 
+router.post('/measurements/all-users-stats', [measurements_Mid.GetAllUsersStatistics], (req, res) => {
+    if (req.success) {
+        res.status(200).json({ msg: "ok", data: req.users_statistics });
+    } else {
+        return res.status(500).json({ message: req.err });
+    }
+});
+
+
 module.exports = router;
