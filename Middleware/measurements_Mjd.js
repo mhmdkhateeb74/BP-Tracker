@@ -5,8 +5,6 @@ async function Addmeasurements(req, res, next) {
     let pulse     = req.body.pulse;
     let date      = req.body.date;
 
-
-
     if (
         user_id === undefined ||
         systolic === undefined ||
@@ -36,11 +34,8 @@ async function Addmeasurements(req, res, next) {
 }
 
 
-
 async function ReadMeasurements(req, res, next) {
     let user_id = req.body.user_id;
-
-
 
     if (user_id === undefined) {
         req.success = false;
@@ -73,8 +68,50 @@ async function ReadMeasurements(req, res, next) {
 }
 
 
+async function UpdateMeasurements(req, res, next) {
+    let id        = req.body.id;
+    let user_id   = req.body.user_id;
+    let systolic  = req.body.systolic;
+    let diastolic = req.body.diastolic;
+    let pulse     = req.body.pulse;
+    let date      = req.body.date;
+
+    if (
+        id === undefined ||
+        user_id === undefined ||
+        systolic === undefined ||
+        diastolic === undefined ||
+        pulse === undefined ||
+        date === undefined
+    ) {
+        req.success = false;
+        req.err = "One or more required fields are undefined";
+        return next();
+    }
+
+    const Query = `UPDATE measurements SET 
+                   user_id = '${user_id}', 
+                   systolic = '${systolic}', 
+                   diastolic = '${diastolic}', 
+                   pulse = '${pulse}', 
+                   date = '${date}' 
+                   WHERE id = ${id}`;
+    const promisePool = db_pool.promise();
+    let rows = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success = true;
+    } catch (err) {
+        console.log("Error in UpdateMeasurements:", err);
+        req.success = false;
+        req.err = err;
+    }
+    next();
+}
+
 
 module.exports = {
     Addmeasurements,
     ReadMeasurements,
+    UpdateMeasurements,
 };
