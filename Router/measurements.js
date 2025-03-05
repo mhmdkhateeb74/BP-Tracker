@@ -28,3 +28,12 @@ router.put('/measurements', [measurements_Mid.UpdateMeasurements], (req, res) =>
         return res.status(500).json({ message: req.err });
     }
 });
+
+
+router.delete('/measurements', [measurements_Mid.DeleteMeasurements], (req, res) => {
+    if (req.success) {
+        res.status(200).json({ msg: "ok" });
+    } else {
+        return res.status(500).json({ message: req.err });
+    }
+});
