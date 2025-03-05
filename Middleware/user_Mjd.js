@@ -20,7 +20,6 @@ async function AddUser(req,res,next){
 }
 
 
-
 async function ReadUsers(req, res, next) {
     const Query = `SELECT * FROM users`;
 
@@ -34,6 +33,27 @@ async function ReadUsers(req, res, next) {
     } catch (err) {
         req.success = false;
         req.err = err;
+    }
+    next();
+}
+
+
+async function UpdateUser(req,res,next){
+    let idx    = parseInt(req.body.idx);
+    let name   = req.body.name;
+
+    let Query = `UPDATE users SET `;
+    Query += ` name = '${name}' `;
+    Query += ` WHERE id = ${idx} `;
+    // console.log(Query);
+    const promisePool = db_pool.promise();
+    let rows=[];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success=true;
+    } catch (err) {
+        req.success=false;
+        console.log(err);
     }
     next();
 }
