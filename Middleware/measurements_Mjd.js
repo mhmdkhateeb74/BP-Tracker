@@ -177,11 +177,44 @@ async function GetUserMeasurements(req, res, next) {
 }
 
 
+async function GetMonthlyUserAverages(req, res, next) {
+    let user_id = req.body.user_id;
+
+    if (user_id === undefined) {
+        req.success = false;
+        req.err = "user_id is undefined";
+        return next();
+    }
+
+    const Query = `SELECT 
+                    YEAR(date) AS year, 
+                    MONTH(date) AS month, 
+                    AVG(systolic) AS avg_systolic, 
+                    AVG(diastolic) AS avg_diastolic, 
+                    AVG(pulse) AS avg_pulse 
+                   FROM measurements 
+                   WHERE user_id = '${user_id}'
+                   GROUP BY YEAR(date), MONTH(date)`;
+    const promisePool = db_pool.promise();
+    let rows = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success = true;
+        req.AvgMeasuresByMonth = rows;
+    } catch (err) {
+        console.log("Error in GetMonthlyUserAverages:", err);
+        req.success = false;
+        req.err = err;
+    }
+    next();
+}
+
+
 module.exports = {
     Addmeasurements,
     ReadMeasurements,
     UpdateMeasurements,
     DeleteMeasurements,
     GetUserMeasurements,
-    
+    GetMonthlyUserAverages,
 };
