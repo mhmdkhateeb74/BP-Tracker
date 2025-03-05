@@ -109,9 +109,32 @@ async function UpdateMeasurements(req, res, next) {
     next();
 }
 
+async function DeleteMeasurements(req, res, next) {
+    let id = req.body.id;
+
+    if (id === undefined) { 
+        req.success = false;
+        req.err = "id is undefined";
+        return next();
+    }
+
+    const Query = `DELETE FROM measurements WHERE id = ${id}`;
+    const promisePool = db_pool.promise();
+    let rows = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success = true;
+    } catch (err) {
+        console.log("Error in DeleteMeasurements:", err);
+        req.success = false;
+        req.err = err;
+    }
+    next();
+}
 
 module.exports = {
     Addmeasurements,
     ReadMeasurements,
     UpdateMeasurements,
+    DeleteMeasurements,
 };
