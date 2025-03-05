@@ -58,6 +58,22 @@ async function UpdateUser(req,res,next){
     next();
 }
 
+async function DeleteUser(req,res,next){
+    let idx    = parseInt(req.body.idx);
+    let Query = `DELETE FROM users  `;
+    Query += ` WHERE id = ${idx} `;
+    // console.log(Query);
+    const promisePool = db_pool.promise();
+    let rows=[];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success=true;
+    } catch (err) {
+        req.success=false;
+        console.log(err);
+    }
+    next();
+}
 
 module.exports = {
     ReadUsers,
