@@ -75,6 +75,10 @@ async function DeleteUser(req,res,next){
     next();
 }
 
+
 module.exports = {
+    AddUser,
+    DeleteUser,
     ReadUsers,
-};
+    UpdateUser,
+}
