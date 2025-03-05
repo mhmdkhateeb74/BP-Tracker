@@ -37,3 +37,15 @@ router.delete('/measurements', [measurements_Mid.DeleteMeasurements], (req, res)
         return res.status(500).json({ message: req.err });
     }
 });
+
+
+router.post('/measurements/daterange', [measurements_Mid.GetUserMeasurements], (req, res) => {
+    if (req.success) {
+        res.status(200).json({ msg: "ok", data: req.measurements_data });
+    } else {
+        return res.status(500).json({ message: req.err });
+    }
+});
+
+
+module.exports = router;
