@@ -48,4 +48,13 @@ router.post('/measurements/daterange', [measurements_Mid.GetUserMeasurements], (
 });
 
 
+router.post('/measurements/monthly-averages', [measurements_Mid.GetMonthlyUserAverages], (req, res) => {
+    if (req.success) {
+        res.status(200).json({ msg: "ok", data: req.AvgMeasuresByMonth });
+    } else {
+        return res.status(500).json({ message: req.err });
+    }
+});
+
+
 module.exports = router;
