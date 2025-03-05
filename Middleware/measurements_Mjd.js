@@ -210,6 +210,45 @@ async function GetMonthlyUserAverages(req, res, next) {
 }
 
 
+async function GetAllUsersStatistics(req, res, next) {
+    let month = req.body.month;
+    let year  = req.body.year;
+
+    if (
+        month === undefined ||
+        year === undefined
+    ) {
+        req.success = false;
+        req.err = "Month and year are required";
+        return next();
+    }
+
+    const Query = `
+        SELECT 
+            user_id, 
+            AVG(systolic) AS avg_systolic, 
+            AVG(diastolic) AS avg_diastolic, 
+            AVG(pulse) AS avg_pulse,
+            SUM(CASE WHEN systolic > (SELECT AVG(systolic) * 1.2 FROM measurements m2 WHERE m2.user_id = measurements.user_id AND MONTH(m2.date) = '${month}' AND YEAR(m2.date) = '${year}') THEN 1 ELSE 0 END) AS abnormal_count
+        FROM measurements
+        WHERE MONTH(date) = '${month}' AND YEAR(date) = '${year}'
+        GROUP BY user_id`;
+    const promisePool = db_pool.promise();
+    let rows = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.success = true;
+        req.users_statistics = rows;
+    } catch (err) {
+        console.log("Error in GetAllUsersStatistics:", err);
+        req.success = false;
+        req.err = err;
+    }
+    next();
+}
+
+
+
 module.exports = {
     Addmeasurements,
     ReadMeasurements,
@@ -217,4 +256,5 @@ module.exports = {
     DeleteMeasurements,
     GetUserMeasurements,
     GetMonthlyUserAverages,
+    GetAllUsersStatistics,
 };
