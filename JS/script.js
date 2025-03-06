@@ -97,4 +97,56 @@ async function deleteMeasurement(measurementId) {
     }
 }
 
+function fetchStats() {
+    const monthInput = document.getElementById("month").value;
+
+    if (!monthInput) {
+        alert("Please select a month.");
+        return;
+    }
+
+    const user_id = document.getElementById("userSelect").value;
+
+    if (!user_id) {
+        alert("Please select a user.");
+        return;
+    }
+
+    const requestData = {
+        user_id: parseInt(user_id),
+        month: monthInput
+    };
+
+    console.log("📤 Fetching Statistics with:", requestData);
+
+    fetch("/measurements/monthly-averages", { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("📥 Server Response:", data);
+
+            let tableBody = document.getElementById("statsTable");
+            tableBody.innerHTML = "";  
+
+            if (data.data && data.data.length > 0) {
+                data.data.forEach(stat => {
+                    let row = `<tr>
+                    <td>${stat.user}</td>
+                    <td>${stat.avg_systolic}</td>
+                    <td>${stat.avg_diastolic}</td>
+                    <td>${stat.abnormal_readings}</td>
+                </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='4'>No statistics available for this month.</td></tr>";
+            }
+        })
+        .catch(error => console.error("Error fetching statistics:", error));
+}
+
+
 
