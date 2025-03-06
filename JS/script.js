@@ -71,3 +71,30 @@ function fetchMeasurements() {
         .catch(error => console.error("Error fetching measurements:", error));
 }
 
+async function deleteMeasurement(measurementId) {
+    let url = "/M/measurements";
+    try {
+        let res = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({ id: measurementId })
+        });
+
+        let data = await res.json();
+
+        await fetchMeasurements();
+
+        if (data.msg === "ok") {
+            setTimeout(() => { alert("Measurement deleted successfully!"); }, 500);
+        } else {
+            setTimeout(() => { alert("Failed to delete measurement: " + data.message); }, 500);
+        }
+    } catch (error) {
+        console.error("Error deleting measurement:", error);
+        alert("Error deleting measurement.");
+    }
+}
+
+
