@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Tracker - User Statistics</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>User Statistics</h1>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/history">View Measurement History</a>
+</nav>
+
+<label for="month">Select Month:</label>
+<input type="month" id="month">
+
+<button onclick="fetchStats()">Show Statistics</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>User</th>
+        <th>Avg Systolic</th>
+        <th>Avg Diastolic</th>
+        <th>Abnormal Readings</th>
+    </tr>
+    </thead>
+    <tbody id="statsTable"></tbody>
+</table>
+
+<script src="js/script.js"></script>
+</body>
+</html> 
