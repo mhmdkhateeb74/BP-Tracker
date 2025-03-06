@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Tracker - Measurement History</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Measurement History</h1>
+
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/stats">View User Statistics</a>z
+
+</nav>
+
+<label for="userSelect">Select User:</label>
+<select id="userSelect"></select>
+
+<label for="startDate">From:</label>
+<input type="date" id="startDate">
+
+<label for="endDate">To:</label>
+<input type="date" id="endDate">
+
+<button onclick="fetchMeasurements()">Show Data</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Systolic</th>
+        <th>Diastolic</th>
+        <th>Pulse</th>
+    </tr>
+    </thead>
+    <tbody id="historyTable"></tbody>
+</table>
+
+<script src="js/script.js"></script>
+</body>
+</html>
+ 
