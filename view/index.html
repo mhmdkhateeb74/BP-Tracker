@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Tracker - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Blood Pressure Tracker</h1>
+
+<nav>
+    <a href="/history">View Measurement History</a>
+    <a href="/stats">View User Statistics</a>
+</nav>
+
+<h2>Add Blood Pressure Measurement</h2>
+<form id="measurementForm">
+    <label for="user">Select User:</label>
+    <select id="user" required></select>
+
+    <label for="systolic">Systolic Pressure:</label>
+    <input type="number" id="systolic" required>
+
+    <label for="diastolic">Diastolic Pressure:</label>
+    <input type="number" id="diastolic" required>
+
+    <label for="pulse">Pulse:</label>
+    <input type="number" id="pulse" required>
+
+    <button type="submit">Add Measurement</button>
+</form>
+
+<script src="js/script.js"></script>
+</body>
+</html>
